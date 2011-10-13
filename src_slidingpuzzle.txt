@@ -1,0 +1,6 @@
+Z:\3P71A1\src\eightslidepuzzle\Asharp.java
+Z:\3P71A1\src\eightslidepuzzle\EightSlidePuzzle.java
+Z:\3P71A1\src\eightslidepuzzle\Manipulator.java
+Z:\3P71A1\src\eightslidepuzzle\Solver.java
+Z:\3P71A1\src\eightslidepuzzle\State.java
+Z:\3P71A1\src\eightslidepuzzle\Value.java

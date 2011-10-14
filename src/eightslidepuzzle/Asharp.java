@@ -32,14 +32,23 @@ public class Asharp implements Solver{
     
     @Override
     public void solve(){
+    	long time=0;
         while(!isGOALreached(current)){
             GENERATE(current);
             Collections.sort(check);
             current = check.get(0);
+            /*
+            while(done.contains(current)){
+            	//done.add();
+            	check.remove(current);
+            	current = check.get(0);
+            }
+            */
             done.add(current);
             check.remove(current);
-            if(calc%1000==0){
-                current.out();
+            if(calc%4000==0){
+                System.out.print(check.size()+":: ");
+                current.out();                
             }
         }
     }
@@ -54,7 +63,7 @@ public class Asharp implements Solver{
     		cost += abs(GOAL.map[i]%MAGIC - S.map[i]%MAGIC)+
     			abs(S.map[i]/MAGIC - GOAL.map[i]/MAGIC);
     	}
-    	S.score = cost+S.depth;
+    	S.score = cost+ S.depth;
     }
     
     // This will create a branch of new nodes waiting to be graded.

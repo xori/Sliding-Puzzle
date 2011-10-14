@@ -10,6 +10,7 @@ public class State implements Comparable<State> {
     public int      x,y,pos;     // co-ordinates for the blank.
     public int		score,depth;
     public String 	lastMove;
+    public State        parent;
     
     private State(){}
     public State(int ... A){
@@ -27,9 +28,18 @@ public class State implements Comparable<State> {
     
     @Override
     public State clone (){
-        return new State(map.clone());
+        State r = new State();
+        r.depth = this.depth;
+        r.lastMove = this.lastMove;
+        r.map = this.map.clone();
+        r.pos = this.pos;
+        r.x = this.x;
+        r.y = this.y;
+        r.score = this.score;
+        return r;
     }
     
+    @Override
     public int compareTo(State S){
     	if (S.score < score)
     		return 1;
@@ -45,7 +55,7 @@ public class State implements Comparable<State> {
     public void out(){
         for(int i = 0; i<map.length; i++)
                 System.out.print(map[i]+" ");
-        System.out.println();
+        System.out.println(score+" "+depth);
     }
     
     

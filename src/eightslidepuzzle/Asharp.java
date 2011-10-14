@@ -1,5 +1,8 @@
 package eightslidepuzzle;
 
+import java.util.Stack;
+import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
 import static java.lang.Math.abs;
@@ -10,28 +13,41 @@ import static eightslidepuzzle.Manipulator.*;
  * @author verworn
  */
 public class Asharp implements Solver{
-    private Node 	todo;
-    private State 	GOAL;
+    private List<State>	check,done;
+    private State 	GOAL,current;
+    // Reverses the order of operations.
+    private Stack<String> theGoalStack;
+    private int calc = 0;
+    
     
     public Asharp(State S,State G){
-    	todo = new Node(S,null);
-    	todo.depth = 0;
+    	check = new ArrayList<State>();
+        done  = new ArrayList<State>();
+    	S.depth = 0;
+        S.lastMove = "START";
+        check.add(S);
     	GOAL = G;
+        current = S;
     }
     
+    @Override
     public void solve(){
-    	GENERATE(todo);
-    	System.out.println(todo.toString());
-    	for (Node n : todo.children){
-    		GENERATE(n);
-    		System.out.println(n.toString());
-    	}
+        while(!isGOALreached(current)){
+            GENERATE(current);
+            Collections.sort(check);
+            current = check.get(0);
+            done.add(current);
+            check.remove(current);
+            if(calc%1000==0){
+                current.out();
+            }
+        }
     }
         
     public void GRADE(State S){
     	int cost = 0;
-    	if (S.map.equals(GOAL.map))
-    		System.out.println("GOAL\n"+S.toString());
+    	if (Arrays.equals(S.map, GOAL.map))
+    		System.out.println("GOAL\n"+S.toString()+" :::"+calc);
     	// Optimized grading. Instead of 9^2 comparisons
     	//	I instead do 4 'complex' calculations
     	for (int i = 0; i < S.map.length; i++){
@@ -42,44 +58,40 @@ public class Asharp implements Solver{
     }
     
     // This will create a branch of new nodes waiting to be graded.
-    public void GENERATE(Node n){
+    private void GENERATE(State S){
     	State temp;
-    	
-    	if(testUP(n.data)){
+    	calc++;
+    	if(testUP(S)){
+            temp = UP(S);
+            temp.depth = S.depth+1;
+            temp.lastMove = "UP";
+            GRADE(temp);
+            check.add(temp);
     	}
+        if(testLEFT(S)){
+            temp = LEFT(S);
+            temp.depth = S.depth+1;
+            temp.lastMove = "LEFT";
+            GRADE(temp);
+            check.add(temp);
+        }
+        if(testDOWN(S)){
+            temp = DOWN(S);
+            temp.depth = S.depth+1;
+            temp.lastMove = "DOWN";
+            GRADE(temp);
+            check.add(temp);
+        }
+        if(testRIGHT(S)){
+            temp = RIGHT(S);
+            temp.depth = S.depth+1;
+            temp.lastMove = "RIGHT";
+            GRADE(temp);
+            check.add(temp);
+        }
     }
     
-    public void CHOOSEBEST(State S){
-        
+    public boolean isGOALreached(State S){
+        return (Arrays.equals(S.map, GOAL.map));
     }
-    
-    private void ADD2LIST(State S){
-        
-    }
-    
-    private class Node {
-	    public State data;
-        public Node parent;
-        public List<Node> children;
-        public int depth;
-        public int rating;
-        public String move;
-	
-	    public Node(State rootData, Node P) {
-	        parent = P;
-	        data = rootData;
-	        children = new ArrayList<Node>();
-	        depth = (parent==null)?0:parent.depth+1;
-	    }
-	    
-	    public String toString (){
-	    	String out = "";
-	    	out += this.hashCode() + "-> ";
-	    	for (Node n : children){
-	    		out += n.hashCode()+", ";
-	    	}
-	    	return out;
-	    }
-	}
-
 }

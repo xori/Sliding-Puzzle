@@ -1,8 +1,9 @@
 package eightslidepuzzle;
 
 /**
- *
- * @author verworn
+ * @author  Evan Verworn <ev09qz@brocku.ca>
+ *          4582938
+ * @version COSC 3P71 Assign 1
  */
 public interface Solver {
     

@@ -1,15 +1,19 @@
 package eightslidepuzzle;
 import static java.lang.Math.sqrt;
 import static eightslidepuzzle.EightSlidePuzzle.MAGIC;
+
 /**
- *
- * @author verworn
+ * @author  Evan Verworn <ev09qz@brocku.ca>
+ *          4582938
+ * @version COSC 3P71 Assign 1
+ * 
+ * This class holds a 'State' of numbers, depth, score and what was last moved.
  */
 public class State implements Comparable<State> {
     public int[] 	map = null;
     public int      x,y,pos;     // co-ordinates for the blank.
     public int		score,depth;
-    public String 	lastMove;
+    public String 	lastMove = "-";
     public State        parent;
     
     private State(){}
@@ -39,6 +43,11 @@ public class State implements Comparable<State> {
         return r;
     }
     
+    /**
+     * Allows for Sorting.
+     * @param S State to compare to.
+     * @return 
+     */
     @Override
     public int compareTo(State S){
     	if (S.score < score)
@@ -57,6 +66,4 @@ public class State implements Comparable<State> {
                 System.out.print(map[i]+" ");
         System.out.println(score+" "+depth);
     }
-    
-    
 }

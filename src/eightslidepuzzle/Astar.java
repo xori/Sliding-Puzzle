@@ -1,62 +1,78 @@
 package eightslidepuzzle;
 
+import java.util.Queue;
 import java.util.Stack;
-import java.util.Collections;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import java.util.PriorityQueue;
 import static java.lang.Math.abs;
 import static eightslidepuzzle.EightSlidePuzzle.MAGIC;
 import static eightslidepuzzle.Manipulator.*;
 /**
- *
- * @author verworn
+ * @author  Evan Verworn <ev09qz@brocku.ca>
+ *          4582938
+ * @version COSC 3P71 Assign 1
+ * 
+ *  A*, it uses a lot of memory but always gives optimal solution. Note that this
+ *  method uses a lot of memory and cannot calculate the worst-case
+ *  because of lack of memory 
  */
-public class Asharp implements Solver{
-    private List<State>	check,done;
+public class Astar implements Solver{
+    private Queue<State>	check;
+    private List<State> done;
     private State 	GOAL,current;
     // Reverses the order of operations.
     private Stack<String> theGoalStack;
     private int calc = 0;
     
     
-    public Asharp(State S,State G){
-    	check = new ArrayList<State>();
+    public Astar(State S,State G){
+    	check = new PriorityQueue<State>();
         done  = new ArrayList<State>();
+        theGoalStack = new Stack<String>();
     	S.depth = 0;
         S.lastMove = "START";
         check.add(S);
     	GOAL = G;
         current = S;
+        System.out.println("NOW SOLVING VIA A* SEARCH");
+        System.out.println("=========================");
     }
     
     @Override
     public void solve(){
-    	long time=0;
         while(!isGOALreached(current)){
+            // Continue to generate and grade states until the GOAL is found.
             GENERATE(current);
-            Collections.sort(check);
-            current = check.get(0);
-            /*
-            while(done.contains(current)){
-            	//done.add();
-            	check.remove(current);
-            	current = check.get(0);
+            try{current = check.remove();}
+            catch(NoSuchElementException e){
+                // OR until we run out of checked nodes.
+                //  (will run out of memory first.)
+                System.out.println("NO SOLUTION FOUND");
+                return;
             }
-            */
             done.add(current);
-            check.remove(current);
-            if(calc%4000==0){
-                System.out.print(check.size()+":: ");
-                current.out();                
+            if(calc%10000==0){
+                System.out.print(" "+check.size()+":: ");
+                current.out();
             }
         }
+        while(!("START".equals(current.lastMove))){
+            theGoalStack.push(current.lastMove);
+            current = current.parent;
+        }
+        while(!theGoalStack.isEmpty()){
+            System.out.print(theGoalStack.pop()+", ");
+        }
+        System.out.println();
     }
         
     public void GRADE(State S){
     	int cost = 0;
     	if (Arrays.equals(S.map, GOAL.map))
-    		System.out.println("GOAL\n"+S.toString()+" :::"+calc);
+    		System.out.println("GOAL FOUND ::: "+calc+" tested.");
     	// Optimized grading. Instead of 9^2 comparisons
     	//	I instead do 4 'complex' calculations
     	for (int i = 0; i < S.map.length; i++){
@@ -73,32 +89,34 @@ public class Asharp implements Solver{
     	if(testUP(S)){
             temp = UP(S);
             temp.depth = S.depth+1;
-            temp.lastMove = "UP";
+            temp.parent = S;
             GRADE(temp);
             check.add(temp);
     	}
         if(testLEFT(S)){
             temp = LEFT(S);
             temp.depth = S.depth+1;
-            temp.lastMove = "LEFT";
+            temp.parent = S;
             GRADE(temp);
             check.add(temp);
         }
         if(testDOWN(S)){
             temp = DOWN(S);
             temp.depth = S.depth+1;
-            temp.lastMove = "DOWN";
+            temp.parent = S;
             GRADE(temp);
             check.add(temp);
         }
         if(testRIGHT(S)){
             temp = RIGHT(S);
             temp.depth = S.depth+1;
-            temp.lastMove = "RIGHT";
+            temp.parent = S;
             GRADE(temp);
             check.add(temp);
         }
     }
+    
+    
     
     public boolean isGOALreached(State S){
         return (Arrays.equals(S.map, GOAL.map));

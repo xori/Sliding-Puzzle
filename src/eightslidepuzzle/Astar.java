@@ -15,9 +15,9 @@ import static eightslidepuzzle.Manipulator.*;
  *          4582938
  * @version COSC 3P71 Assign 1
  * 
- *  A*, it uses a lot of memory but always gives optimal solution. Note that this
- *  method uses a lot of memory and cannot calculate the worst-case
- *  because of lack of memory 
+ *  A*, always gives optimal solution. Worst case for 8 puzzle is
+ *      8 0 6 5 4 7 2 3 1
+ *  
  */
 public class Astar implements Solver{
     private Queue<State>	check;
@@ -25,7 +25,7 @@ public class Astar implements Solver{
     private State 	GOAL,current;
     // Reverses the order of operations.
     private Stack<String> theGoalStack;
-    private int calc = 0;
+    private int calc,thrown = 0;
     
     
     public Astar(State S,State G){
@@ -63,6 +63,7 @@ public class Astar implements Solver{
             theGoalStack.push(current.lastMove);
             current = current.parent;
         }
+        System.out.print(theGoalStack.size()+" moves: ");
         while(!theGoalStack.isEmpty()){
             System.out.print(theGoalStack.pop()+", ");
         }
@@ -72,7 +73,7 @@ public class Astar implements Solver{
     public void GRADE(State S){
     	int cost = 0;
     	if (Arrays.equals(S.map, GOAL.map))
-    		System.out.println("GOAL FOUND ::: "+calc+" tested.");
+    		System.out.println("GOAL FOUND ::: "+calc+" tested ::: "+thrown+" thrown away.");
     	// Optimized grading. Instead of 9^2 comparisons
     	//	I instead do 4 'complex' calculations
     	for (int i = 0; i < S.map.length; i++){
@@ -91,6 +92,7 @@ public class Astar implements Solver{
             temp.depth = S.depth+1;
             temp.parent = S;
             GRADE(temp);
+            if(!exists(temp))
             check.add(temp);
     	}
         if(testLEFT(S)){
@@ -98,6 +100,7 @@ public class Astar implements Solver{
             temp.depth = S.depth+1;
             temp.parent = S;
             GRADE(temp);
+            if(!exists(temp))
             check.add(temp);
         }
         if(testDOWN(S)){
@@ -105,17 +108,28 @@ public class Astar implements Solver{
             temp.depth = S.depth+1;
             temp.parent = S;
             GRADE(temp);
-            check.add(temp);
+            if(!exists(temp))
+                check.add(temp);
         }
         if(testRIGHT(S)){
             temp = RIGHT(S);
             temp.depth = S.depth+1;
             temp.parent = S;
             GRADE(temp);
-            check.add(temp);
+            if(!exists(temp))
+                check.add(temp);
         }
     }
     
+    private boolean exists(State S){
+        for (State i : done){
+            if(Arrays.equals(i.map, S.map)){
+                thrown++;
+                return true;
+            }
+        }
+        return false;
+    }
     
     
     public boolean isGOALreached(State S){

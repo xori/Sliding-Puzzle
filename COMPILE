@@ -1,0 +1,3 @@
+#!/bin/bash
+echo "Compiling EightSlidePuzzle..."
+javac -sourcepath src -d build/classes src/eightslidepuzzle/EightSlidePuzzle.java

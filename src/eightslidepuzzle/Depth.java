@@ -55,9 +55,10 @@ public class Depth implements Solver{
     
     @Override
     public void solve() {
-        if (goDeeper(current))
+        if (goDeeper(current)){
+            System.out.print(goalStack.size()+" moves: ");
             while(!goalStack.isEmpty())
-                System.out.print(goalStack.pop()+", ");
+                System.out.print(goalStack.pop()+", ");}
         else
             System.out.println("UNSOLVABLE");
         System.out.println(calc+" tested.");

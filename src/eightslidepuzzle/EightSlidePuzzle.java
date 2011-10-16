@@ -27,7 +27,7 @@ public class EightSlidePuzzle {
      *  NOTE: No checks are done to assume proper input. 
      *  NOTE2: If A* starts spouting numbers it means that it's just showing that
      *          its still calculating stuff. For example
-     *  50674:: 3 1 2 5 0 7 6 4 8 19 11
+     *   5635:: 5 3 6 2 4 7 0 1 8 33 15
      *          The first number is how many elements are in the tree. The next 8
      *          numbers is the current best. The last 2 numbers are the score followed
      *          by the current depth.
@@ -36,6 +36,7 @@ public class EightSlidePuzzle {
         State G = new State(0,1,2,3,4,5,6,7,8);
         State S = null;
         int[] temp = new int[9];
+        long time = 0;
         
         // ARGUMENT PARSING
         if (args.length>=9){
@@ -59,11 +60,16 @@ public class EightSlidePuzzle {
         System.out.println();
         
         // Solve with A*
+            time = System.currentTimeMillis();
         Solver Sherlock = new Astar(S,G);
         Sherlock.solve();
+            System.out.println(System.currentTimeMillis()-time+"ms to solve");
+            
         // Sove with Depth First;
+            time = System.currentTimeMillis();
         Sherlock = new Depth(S, G);
         Sherlock.solve();
+            System.out.println(System.currentTimeMillis()-time+"ms to solve");
     }
     
     static State random (State G){

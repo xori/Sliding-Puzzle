@@ -1,0 +1,39 @@
++---------------------------------+
+|  Summary of N-Puzzle Assignment |
++---------------------------------+
+
+    As expected the informed search performed much better than the un-informed 
+search when trying to find solutions to the sliding 8-puzzle. 
+
+A* can complete the worst case on my machine within 10s checking 14957 possible
+solutions (plus 16643 duplicates). The depth first search obviously will run for
+much longer. (I haven't let it run long enough to find out.)
+
+Memory wise, A* uses tons more memory. For the 8-puzzle it can have up to ~10000
+states in its' memory tree. While depth first search only keeps the maximum of 31.
+As 31 is the worst possible case of moves
+
+My previous implementation of A* didn't check to see if it has already computed
+a given state before adding it into it's memory tree. This little flaw in my program
+increased the branching factor by so much I would run out of memory for the simplest
+starting sets. (It easily reached up to +1,000,000 states in memory) The example
+below is one example of the time difference between one algorithm and the other.
+
+Example Output:
+ GOAL: 0 1 2 3 4 5 6 7 8 0 0
+STATE: 5 6 7 0 3 2 4 1 8 0 0
+
+NOW SOLVING VIA A* SEARCH
+=========================
+GOAL FOUND ::: 564 tested ::: 614 thrown away.
+21 moves: DOWN, RIGHT, UP, UP, LEFT, DOWN, DOWN, RIGHT, UP, UP, RIGHT, DOWN, 
+LEFT, UP, LEFT, DOWN, DOWN, RIGHT, UP, UP, LEFT, 
+19ms to solve
+
+NOW SOLVING VIA DEPTH FIRST SEARCH
+==================================
+31 moves: UP, DOWN, UP, DOWN, UP, DOWN, UP, DOWN, UP, DOWN, DOWN, RIGHT, UP, 
+UP, LEFT, DOWN, DOWN, RIGHT, UP, UP, RIGHT, DOWN, LEFT, UP, LEFT, DOWN, DOWN, 
+RIGHT, UP, UP, LEFT, 5072185966 tested.
+1950463ms to solve
+

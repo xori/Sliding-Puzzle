@@ -39,9 +39,39 @@
 			<active>false</active>
 		</docitem>
 		<docitem>
-			<path>src\eightslidepuzzle\Asharp.java</path>
+			<path>src\eightslidepuzzle\Astar.java</path>
 			<source>true</source>
 			<index>3</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>src\Summary.txt</path>
+			<source>true</source>
+			<index>4</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>src\eightslidepuzzle\Depth.java</path>
+			<source>true</source>
+			<index>5</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>src\eightslidepuzzle\Solver.java</path>
+			<source>true</source>
+			<index>6</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>RUN</path>
+			<source>true</source>
+			<index>7</index>
+			<active>false</active>
+		</docitem>
+		<docitem>
+			<path>COMPILE</path>
+			<source>true</source>
+			<index>8</index>
 			<active>true</active>
 		</docitem>
 	</open_files>

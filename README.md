@@ -6,6 +6,7 @@
 ./RUN
 ```
 or
+
 ```
 ./COMPILE
 ./RUN [[STARTING STATE] [GOALSTATE]]

@@ -9,6 +9,7 @@ or
 ```
 ./COMPILE
 ./RUN [[STARTING STATE] [GOALSTATE]]
+```
 
 ### Example
 ```./RUN 3 5 6 7 4 2 1 0 8```
